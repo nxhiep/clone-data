@@ -1,0 +1,27 @@
+body {
+    width:400px;
+    height:400px
+}
+
+.images,
+.hint,
+.correct-answers,
+.incorrect-answers,
+.explanation,
+.question {
+    border: 1px solid #ddd;
+    margin-bottom:12px;
+    border-radius:4px;
+    padding:12px;
+}
+
+.preview-panel {
+    border: 1px solid #ddd;
+    padding:12px;
+    border-radius:4px;
+}
+.preview-panel .q-item {
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin-bottom:8px;
+}
