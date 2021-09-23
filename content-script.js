@@ -10,24 +10,32 @@ if (window.location.href.indexOf('accuplacerpracticetest.com') > -1) {
     const answerContentId = ".mtq_answer_text";
     const explanationAnswerId = ".mtq_explanation-text";
 
+    const getContent = (key, element) => {
+        let elem = element.querySelector(key);
+        if (elem && elem.innerHTML && elem.innerHTML.indexOf("MathJax") > -1) {
+            return elem.innerHTML;
+        }
+        return elem?.innerText ?? "";
+    }
+
     const getQuestionData = (element) => {
-        let question = element.querySelector(questionId).innerText;
-        let hint = element.querySelector(hintId).innerText;
-        let explanationAnswer = element.querySelector(explanationAnswerId).innerText;
+        let question = getContent(questionId, element);
+        let hint = getContent(hintId, element);
+        let explanationAnswer = getContent(explanationAnswerId, element);
 
         let correctAnswersElement = element.querySelectorAll(correctAnswerId);
         let inCorrectAnswersElement = element.querySelectorAll(inCorrectAnswerId);
 
         let correctAnswers = [];
         correctAnswersElement?.forEach((element) => {
-            let text = element.parentElement.parentElement.querySelector(answerContentId).innerText;
+            let text = getContent(answerContentId, element.parentElement.parentElement);
             if (text && correctAnswers.indexOf(text) == -1) {
                 correctAnswers.push(text);
             }
         });
         let inCorrectAnswers = [];
         inCorrectAnswersElement?.forEach((element) => {
-            let text = element.parentElement.parentElement.querySelector(answerContentId).innerText
+            let text = getContent(answerContentId, element.parentElement.parentElement);
             if (text && inCorrectAnswers.indexOf(text) == -1) {
                 inCorrectAnswers.push(text);
             }
@@ -50,8 +58,10 @@ if (window.location.href.indexOf('accuplacerpracticetest.com') > -1) {
             let questionData = getQuestionData(element);
             questions.push(questionData);
         });
-        downloadJson(JSON.stringify(questions), 'json.txt', 'text/plain');
-
+        if (questions.length > 0) {
+            let name = document.querySelector('.entry-title[itemprop="headline"]').innerText;
+            downloadJson(JSON.stringify(questions), name + '.json', 'text/plain');
+        }
     }, 1000);
 
 
